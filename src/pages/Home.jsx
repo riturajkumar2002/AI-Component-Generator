@@ -43,7 +43,7 @@ const Home = () => {
   // Provide your key via environment variable at build time.
   // Example: VITE_GOOGLE_API_KEY=xxxx
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
-  const model = import.meta.env.VITE_GOOGLE_MODEL || "gemini-1.5-pro";
+  const model = import.meta.env.VITE_GOOGLE_MODEL || "gemini-2.0-flash-001";
   const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
 
   // Prevent runtime calls when the key is missing.

@@ -38,14 +38,21 @@ const Home = () => {
     return match ? match[1].trim() : response.trim();
   }
 
-  // ⚠️ API Key (you said you want it inside the file)
-  const ai = new GoogleGenAI({
-    apiKey: "YOUR_API_KEY"
-  });
+  // ⚠️ API Key
+  // This app must not embed secrets in the frontend.
+  // Provide your key via environment variable at build time.
+  // Example: VITE_GOOGLE_API_KEY=xxxx
+  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  const model = import.meta.env.VITE_GOOGLE_MODEL || "gemini-1.5-pro";
+  const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+
+  // Prevent runtime calls when the key is missing.
+  const apiKeyMissing = !apiKey;
 
   // ✅ Generate code
   async function getResponse() {
     if (!prompt.trim()) return toast.error("Please describe your component first");
+    if (apiKeyMissing) return toast.error("Missing Google API key. Set VITE_GOOGLE_API_KEY in .env");
 
     try {
       setLoading(true);

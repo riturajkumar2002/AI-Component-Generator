@@ -1,11 +1,22 @@
-# React + Vite
+# AI Component Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + Vite app that generates UI component code using the Google Gemini API.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Copy `.env.example` to `.env`
+2. Set `VITE_GOOGLE_API_KEY` to your Google Cloud API key
+3. Optionally set `VITE_GOOGLE_MODEL=gemini-2.0-flash-001`
+4. Run `npm install`
+5. Start the app with `npm run dev`
+
+> If you receive a 429 quota error, verify your Google Cloud project's billing and quota settings for `generativelanguage.googleapis.com`.
+
+## Notes
+
+- This app currently sends the API key from the browser.
+- For production, route requests through a backend to keep your key secret.
+- If your project has no free-tier quota for Gemini, enable billing or use a paid quota.
 
 ## Expanding the ESLint configuration
 

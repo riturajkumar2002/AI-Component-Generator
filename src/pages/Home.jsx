@@ -38,8 +38,29 @@ const Home = () => {
     return match ? match[1].trim() : response.trim();
   }
 
+  const getErrorMessage = (error) => {
+    if (!error) return "Something went wrong while generating code.";
+    const quotaMessage =
+      error?.error?.code === 429 ||
+      error?.response?.status === 429 ||
+      error?.status === 429;
+
+    if (quotaMessage) {
+      return "Gemini API quota exceeded. Verify your Google Cloud billing and quota for generativelanguage.googleapis.com.";
+    }
+
+    const message =
+      error?.error?.message ||
+      error?.response?.data?.error?.message ||
+      error?.message ||
+      (typeof error === "string" ? error : undefined);
+
+    return message || "Something went wrong while generating code.";
+  };
+
   // ⚠️ API Key
-  // This app must not embed secrets in the frontend.
+  // This app exposes the key in the browser bundle.
+  // Use this only for local development or route requests through a secure backend.
   // Provide your key via environment variable at build time.
   // Example: VITE_GOOGLE_API_KEY=xxxx
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
@@ -78,8 +99,8 @@ Requirements:
       setCode(extractCode(response.text));
       setOutputScreen(true);
     } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong while generating code");
+      console.error("Google API error:", error);
+      toast.error(getErrorMessage(error));
     } finally {
       setLoading(false);
     }
